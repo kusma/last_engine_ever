@@ -1,0 +1,5 @@
+<material>
+<ambient r="0.588235" g="0.588235" b="0.588235" />
+<diffuse r="0.588235" g="0.588235" b="0.588235" />
+<texture file="space.jpg" />
+</material>

@@ -1,0 +1,7 @@
+<material>
+<ambient r="0.019608" g="0.000000" b="0.066667" />
+<diffuse r="0.000000" g="0.078431" b="0.031373" />
+<blend srcblend="destcolor" dstblend="zero" />
+<texture file="bleu.jpg" />
+<envmap file="bleu.jpg" />
+</material>

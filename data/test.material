@@ -1,0 +1,5 @@
+<material>
+	<emissive r="0" g="0" b="0" />
+	<ambient r="0.01" g="0.01" b="0.01" />
+	<diffuse r="1" g="1" b="1" />
+</material>

@@ -1,0 +1,5 @@
+<material>
+<ambient r="0.301961" g="0.301961" b="0.301961" />
+<diffuse r="0.301961" g="0.301961" b="0.301961" />
+<texture file="bleu.jpg" />
+</material>

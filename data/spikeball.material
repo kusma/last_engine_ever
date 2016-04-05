@@ -1,0 +1,5 @@
+<material>
+<ambient r="0.000000" g="0.000000" b="0.000000" />
+<diffuse r="0.360784" g="0.360784" b="0.360784" />
+<envmap file="ugly_env.jpg" />
+</material>
