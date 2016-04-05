@@ -1,29 +1,21 @@
-Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "last_engine_ever", "last_engine_ever.vcproj", "{697BBD5F-727D-4BC5-A586-ABABDFBE291D}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dt1", "dt2003\dt1.vcproj", "{347EB1F9-822B-4206-A6F3-FE0F5468DBCD}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "last_engine_ever", "last_engine_ever.vcxproj", "{697BBD5F-727D-4BC5-A586-ABABDFBE291D}"
 EndProject
 Global
-	GlobalSection(SolutionConfiguration) = preSolution
-		Debug = Debug
-		Release = Release
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
 	EndGlobalSection
-	GlobalSection(ProjectConfiguration) = postSolution
-		{697BBD5F-727D-4BC5-A586-ABABDFBE291D}.Debug.ActiveCfg = Debug|Win32
-		{697BBD5F-727D-4BC5-A586-ABABDFBE291D}.Debug.Build.0 = Debug|Win32
-		{697BBD5F-727D-4BC5-A586-ABABDFBE291D}.Release.ActiveCfg = Release|Win32
-		{697BBD5F-727D-4BC5-A586-ABABDFBE291D}.Release.Build.0 = Release|Win32
-		{347EB1F9-822B-4206-A6F3-FE0F5468DBCD}.Debug.ActiveCfg = Debug|Win32
-		{347EB1F9-822B-4206-A6F3-FE0F5468DBCD}.Debug.Build.0 = Debug|Win32
-		{347EB1F9-822B-4206-A6F3-FE0F5468DBCD}.Release.ActiveCfg = Release|Win32
-		{347EB1F9-822B-4206-A6F3-FE0F5468DBCD}.Release.Build.0 = Release|Win32
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{697BBD5F-727D-4BC5-A586-ABABDFBE291D}.Debug|x86.ActiveCfg = Debug|Win32
+		{697BBD5F-727D-4BC5-A586-ABABDFBE291D}.Debug|x86.Build.0 = Debug|Win32
+		{697BBD5F-727D-4BC5-A586-ABABDFBE291D}.Release|x86.ActiveCfg = Release|Win32
+		{697BBD5F-727D-4BC5-A586-ABABDFBE291D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-	EndGlobalSection
-	GlobalSection(ExtensibilityAddIns) = postSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

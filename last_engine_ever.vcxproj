@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{697BBD5F-727D-4BC5-A586-ABABDFBE291D}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>14.0.24720.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>Debug\</OutDir>
+    <IntDir>Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
+    <Linkage-tinyxml2>
+    </Linkage-tinyxml2>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>Release\</OutDir>
+    <IntDir>Release\</IntDir>
+    <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
+    <Linkage-tinyxml2>
+    </Linkage-tinyxml2>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\DXSDK\Include;include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)last_engine_ever.exe</OutputFile>
+      <AdditionalLibraryDirectories>$(DXSDK_DIR)\Lib\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)last_engine_ever.pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\DXSDK\Include;include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxerr.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(DXSDK_DIR)\Lib\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="BassPlayer.cpp" />
+    <ClCompile Include="d3dwin.cpp" />
+    <ClCompile Include="dt2003\reader.cpp" />
+    <ClCompile Include="engine\BlurTexture.cpp" />
+    <ClCompile Include="engine\Entity.cpp" />
+    <ClCompile Include="engine\Image.cpp" />
+    <ClCompile Include="engine\Light.cpp" />
+    <ClCompile Include="engine\Material.cpp" />
+    <ClCompile Include="engine\MaterialProxy.cpp" />
+    <ClCompile Include="engine\Matrix.cpp" />
+    <ClCompile Include="engine\Mesh.cpp" />
+    <ClCompile Include="engine\MeshProxy.cpp" />
+    <ClCompile Include="engine\Object.cpp" />
+    <ClCompile Include="engine\Scene.cpp" />
+    <ClCompile Include="engine\SceneProxy.cpp" />
+    <ClCompile Include="engine\SubMesh.cpp" />
+    <ClCompile Include="engine\TextureProxy.cpp" />
+    <ClCompile Include="file\file.c" />
+    <ClCompile Include="file\urarlib.c" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="paintfuck.cpp" />
+    <ClCompile Include="rayofshite.cpp" />
+    <ClCompile Include="Timer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BassPlayer.h" />
+    <ClInclude Include="d3dwin.h" />
+    <ClInclude Include="dt2003\reader.h" />
+    <ClInclude Include="engine\BlurTexture.h" />
+    <ClInclude Include="engine\Camera.h" />
+    <ClInclude Include="engine\Entity.h" />
+    <ClInclude Include="engine\Image.h" />
+    <ClInclude Include="engine\Light.h" />
+    <ClInclude Include="engine\Material.h" />
+    <ClInclude Include="engine\MaterialProxy.h" />
+    <ClInclude Include="engine\Matrix.h" />
+    <ClInclude Include="engine\Mesh.h" />
+    <ClInclude Include="engine\MeshProxy.h" />
+    <ClInclude Include="engine\Object.h" />
+    <ClInclude Include="engine\Prs.h" />
+    <ClInclude Include="engine\Quaternion.h" />
+    <ClInclude Include="engine\RenderTarget.h" />
+    <ClInclude Include="engine\RenderTexture.h" />
+    <ClInclude Include="engine\ResourceProxy.h" />
+    <ClInclude Include="engine\Scene.h" />
+    <ClInclude Include="engine\SceneProxy.h" />
+    <ClInclude Include="engine\SubMesh.h" />
+    <ClInclude Include="engine\Texture.h" />
+    <ClInclude Include="engine\TextureProxy.h" />
+    <ClInclude Include="engine\Uv.h" />
+    <ClInclude Include="engine\Vector.h" />
+    <ClInclude Include="engine\Vertex.h" />
+    <ClInclude Include="engine\Vertex2D.h" />
+    <ClInclude Include="file\file.h" />
+    <ClInclude Include="file\urarlib.h" />
+    <ClInclude Include="paintfuck.h" />
+    <ClInclude Include="rayofshite.h" />
+    <ClInclude Include="TimeProvider.h" />
+    <ClInclude Include="Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\bass.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\tinyxml2.redist.3.0.0\build\native\tinyxml2.redist.targets" Condition="Exists('packages\tinyxml2.redist.3.0.0\build\native\tinyxml2.redist.targets')" />
+    <Import Project="packages\tinyxml2.3.0.0\build\native\tinyxml2.targets" Condition="Exists('packages\tinyxml2.3.0.0\build\native\tinyxml2.targets')" />
+    <Import Project="packages\tinyxml2.symbols.3.0.0\build\native\tinyxml2.symbols.targets" Condition="Exists('packages\tinyxml2.symbols.3.0.0\build\native\tinyxml2.symbols.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\tinyxml2.redist.3.0.0\build\native\tinyxml2.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\tinyxml2.redist.3.0.0\build\native\tinyxml2.redist.targets'))" />
+    <Error Condition="!Exists('packages\tinyxml2.3.0.0\build\native\tinyxml2.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\tinyxml2.3.0.0\build\native\tinyxml2.targets'))" />
+    <Error Condition="!Exists('packages\tinyxml2.symbols.3.0.0\build\native\tinyxml2.symbols.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\tinyxml2.symbols.3.0.0\build\native\tinyxml2.symbols.targets'))" />
+  </Target>
+</Project>

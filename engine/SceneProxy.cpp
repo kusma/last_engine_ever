@@ -1,43 +1,44 @@
-#include "tinyxml.h"
+#include <tinyxml2.h>
 #include "file/file.h"
 #include "SceneProxy.h"
 
 using namespace engine;
+using namespace tinyxml2;
 
 static SceneProxy *scene_proxy;
 
-static float read_float(TiXmlElement *elem, const char *name, float default_val) {
+static float read_float(XMLElement *elem, const char *name, float default_val) {
 	const char *ret = elem->Attribute(name);
 	if (!ret) return default_val;
 	return float(atof(ret));
 }
 
-static void read_position(TiXmlNode* node, Vector* target) {
-	TiXmlElement *temp = node->ToElement();
+static void read_position(XMLNode* node, Vector* target) {
+	XMLElement *temp = node->ToElement();
 	if (!temp) return;
 	*target = Vector(read_float(temp, "x", 0), read_float(temp, "y", 0), read_float(temp, "z", 0));
 }
 
-static void read_rotation(TiXmlNode* node, Quaternion* target) {
-	TiXmlElement *temp = node->ToElement();
+static void read_rotation(XMLNode* node, Quaternion* target) {
+	XMLElement *temp = node->ToElement();
 	if (!temp) return;
 	*target = Quaternion(read_float(temp, "w", 1), read_float(temp, "x", 0), read_float(temp, "y", 0), read_float(temp, "z", 0));
 }
 
-static void read_scale(TiXmlNode* node, Vector* target) {
-	TiXmlElement *temp = node->ToElement();
+static void read_scale(XMLNode* node, Vector* target) {
+	XMLElement *temp = node->ToElement();
 	if (!temp) return;
 	*target = Vector(read_float(temp, "x", 1), read_float(temp, "y", 1), read_float(temp, "z", 1));
 }
 
-static void read_color(TiXmlNode* node, Color* target) {
-	TiXmlElement *temp = node->ToElement();
+static void read_color(XMLNode* node, Color* target) {
+	XMLElement *temp = node->ToElement();
 	if (!temp) return;
 	*target = Color(read_float(temp, "r", 1), read_float(temp, "g", 1), read_float(temp, "b", 1), read_float(temp, "a", 1));
 }
 
-void SceneProxy::read_object(Scene *scene, TiXmlNode* node, Entity* parent) {
-	TiXmlElement *temp = node->ToElement();
+void SceneProxy::read_object(Scene *scene, XMLNode* node, Entity* parent) {
+	XMLElement *temp = node->ToElement();
 	if (!temp) return;
 	// Who gives a shit about some small memleak as long as it's not vidmem? Lets allocate and forget :)
 	Object *temp_obj = new Object(mesh_proxy.get_resource(temp->Attribute("mesh")), parent);
@@ -45,8 +46,8 @@ void SceneProxy::read_object(Scene *scene, TiXmlNode* node, Entity* parent) {
 	read_children(scene, node, temp_obj);
 }
 
-void SceneProxy::read_camera(Scene *scene, TiXmlNode* node, Entity* parent) {
-	TiXmlElement *temp = node->ToElement();
+void SceneProxy::read_camera(Scene *scene, XMLNode* node, Entity* parent) {
+	XMLElement *temp = node->ToElement();
 	if (!temp) return;
 	// Who gives a shit about some small memleak as long as it's not vidmem? Lets allocate and forget :)
 	Camera *temp_cam = new Camera(parent);
@@ -54,25 +55,25 @@ void SceneProxy::read_camera(Scene *scene, TiXmlNode* node, Entity* parent) {
 	read_children(scene, node, temp_cam);
 }
 
-void SceneProxy::read_light(Scene *scene, TiXmlNode* node, Entity* parent) {
-	TiXmlElement *temp = node->ToElement();
+void SceneProxy::read_light(Scene *scene, XMLNode* node, Entity* parent) {
+	XMLElement *temp = node->ToElement();
 	if (!temp) return;
 	Light *temp_light = new Light(parent);
 	scene->add(temp_light);
 
-	TiXmlNode* curr = node->FirstChild();
+	XMLNode* curr = node->FirstChild();
 	while (curr) {
 		if (strcmp(curr->Value(), "diffuse") == 0) read_color(curr, &temp_light->diffuse);
 		if (strcmp(curr->Value(), "ambient") == 0) read_color(curr, &temp_light->ambient);
 		if (strcmp(curr->Value(), "specular") == 0) read_color(curr, &temp_light->specular);
-		curr = node->IterateChildren(curr);
+		curr = curr->NextSibling();
 	}	
 
 	read_children(scene, node, temp_light);
 }
 
-void SceneProxy::read_children(Scene *scene, TiXmlNode* node, Entity* parent) {
-	TiXmlNode* curr = node->FirstChild();
+void SceneProxy::read_children(Scene *scene, XMLNode* node, Entity* parent) {
+	XMLNode* curr = node->FirstChild();
 	while (curr) {
 		// nodes
 		if (strcmp(curr->Value(), "object") == 0) read_object(scene, curr, parent);
@@ -93,7 +94,7 @@ void SceneProxy::read_children(Scene *scene, TiXmlNode* node, Entity* parent) {
 				scene->set_ambient(temp.r, temp.g, temp.b);
 			}
 		}
-		curr = node->IterateChildren(curr);
+		curr = curr->NextSibling();
 	}	
 }
 
@@ -105,13 +106,10 @@ Scene* SceneProxy::read_from_file(std::string filename) {
 	file_read(string, 1, fp->size, fp);
 	string[fp->size] = '\0';
 
-	TiXmlDocument doc;
+	tinyxml2::XMLDocument doc;
 	doc.Parse(string);
-	if (doc.Error()) {
-		char temp[256];
-		sprintf(temp, "line %i: %s", doc.ErrorRow(), doc.ErrorDesc());
-		throw std::string(temp);
-	}
+	if (doc.Error())
+		throw std::string(doc.GetErrorStr1());
 
 	Scene *temp = new Scene;
 	scene_proxy = this;

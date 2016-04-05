@@ -1,17 +1,18 @@
-#include "tinyxml.h"
+#include <tinyxml2.h>
 #include "file/file.h"
 #include "MaterialProxy.h"
 
 using namespace engine;
+using namespace tinyxml2;
 
-inline float read_float(TiXmlElement *elem, const char *name, float default_val) {
+inline float read_float(XMLElement *elem, const char *name, float default_val) {
 	const char *ret = elem->Attribute(name);
 	if (!ret) return default_val;
 	return float(atof(ret));
 }
 
-static void read_color(TiXmlNode* node, Color* target) {
-	TiXmlElement *temp = node->ToElement();
+static void read_color(XMLNode* node, Color* target) {
+	XMLElement *temp = node->ToElement();
 	if (temp) *target = Color(read_float(temp, "r", 1), read_float(temp, "g", 1), read_float(temp, "b", 1), read_float(temp, "a", 1));
 }
 
@@ -23,23 +24,20 @@ Material* MaterialProxy::read_from_file(std::string filename) {
 	file_read(string, 1, fp->size, fp);
 	string[fp->size] = '\0';
 
-	TiXmlDocument doc;
+	tinyxml2::XMLDocument doc;
 	doc.Parse(string);
-	if (doc.Error()) {
-		char temp[256];
-		sprintf(temp, "line %i: %s", doc.ErrorRow(), doc.ErrorDesc());
-		throw std::string(temp);
-	}
+	if (doc.Error())
+		throw std::string(doc.GetErrorStr1());
 
 	Material *temp = new Material;
-	TiXmlNode* node = doc.RootElement();
-	TiXmlNode* curr = node->FirstChild();
+	XMLNode* node = doc.RootElement();
+	XMLNode* curr = node->FirstChild();
 	while (curr) {
 		if (strcmp(curr->Value(), "emissive") == 0) read_color(curr, &temp->emissive);
 		if (strcmp(curr->Value(), "ambient") == 0) read_color(curr, &temp->ambient);
 		if (strcmp(curr->Value(), "diffuse") == 0) read_color(curr, &temp->diffuse);
 		if (strcmp(curr->Value(), "specular") == 0) {
-			TiXmlElement *temp_node = node->ToElement();
+			XMLElement *temp_node = node->ToElement();
 			if (temp_node) {
 				temp->shinyness = read_float(temp_node, "shinyness", 0);
 				temp->specular_power = read_float(temp_node, "power", 1);
@@ -47,7 +45,7 @@ Material* MaterialProxy::read_from_file(std::string filename) {
 		}
 
 		if (strcmp(curr->Value(), "blend") == 0) {
-			TiXmlElement *temp_node = curr->ToElement();
+			XMLElement *temp_node = curr->ToElement();
 			if (temp_node)  {
 				const char *str = temp_node->Attribute("srcblend");
 
@@ -97,7 +95,7 @@ Material* MaterialProxy::read_from_file(std::string filename) {
 		}
 
 		if (strcmp(curr->Value(), "texture") == 0) {
-			TiXmlElement *temp_node = curr->ToElement();
+			XMLElement *temp_node = curr->ToElement();
 			if (temp_node)  {
 				const char *str = temp_node->Attribute("file");
 				if (str) {
@@ -108,7 +106,7 @@ Material* MaterialProxy::read_from_file(std::string filename) {
 		}
 
 		if (strcmp(curr->Value(), "envmap") == 0) {
-			TiXmlElement *temp_node = curr->ToElement();
+			XMLElement *temp_node = curr->ToElement();
 			if (temp_node)  {
 				const char *str = temp_node->Attribute("file");
 				if (str) {
@@ -117,7 +115,7 @@ Material* MaterialProxy::read_from_file(std::string filename) {
 				}
 			}
 		}
-		curr = node->IterateChildren(curr);
+		curr = curr->NextSibling();
 	}
 	return temp;
 }
