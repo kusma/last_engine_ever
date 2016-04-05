@@ -112,7 +112,8 @@ bool Syncreader::fill() {
 
 		//interpolate
 		int q, begin, end;
-		float diff, diffval;
+		int diff;
+		float diffval;
 		for(int c=0;c<trigidx;c++) {
 			begin = trigpos[c];
 			end = trigpos[c+1];
@@ -121,7 +122,7 @@ bool Syncreader::fill() {
 			for(q=begin;q<end;q++) {
 				if(interp[t][q]) {
 					d = idata[t][q];
-					data[t][q] = idata[t][begin] + diffval * ((q - begin) / diff);
+					data[t][q] = idata[t][begin] + diffval * ((q - begin) / (float)diff);
 				} else {
 					data[t][q] = idata[t][q];
 				}
