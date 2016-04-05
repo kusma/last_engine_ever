@@ -181,7 +181,7 @@ void Matrix::inverse() {
 
 		for(int j=i+1; j<4; j++){
 			val = matrix[j][i];
-			for(k=0; k<4; k++){
+			for(int k=0; k<4; k++){
 				matrix[j][k] -= matrix[i][k] * val;
 				temp.matrix[j][k] -= temp.matrix[i][k] * val;
 			}
