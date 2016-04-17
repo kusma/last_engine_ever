@@ -3,24 +3,9 @@
 #include <d3d9.h>
 #include <string>
 #include "d3dwin.h"
-#include "dt2003\common.h"
-
-D3DWin* L33T;
 
 D3DWin::D3DWin(const char *title, unsigned int width, unsigned int height, D3DFORMAT format, bool fullscreen) : direct3d(0), device(0), window(0) {
 	instance = GetModuleHandle(NULL);
-
-	UINT32 style;
-	if (!fullscreen) style = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU;
-	else style = WS_POPUP;
-
-	RECT rect;
-	rect.left = 0;
-	rect.top = 0;
-	rect.right = width;
-	rect.bottom = height;
-
-	if(!fullscreen) AdjustWindowRect(&rect, style, false);
 
 	WNDCLASS wc;
 	wc.style = CS_VREDRAW|CS_HREDRAW;
@@ -35,7 +20,7 @@ D3DWin::D3DWin(const char *title, unsigned int width, unsigned int height, D3DFO
 	wc.lpszClassName = "d3d9";
 	RegisterClass(&wc);
 	
-	window = CreateWindowEx(0, "d3d9", title, style | WS_VISIBLE, 0, 0, rect.right - rect.left, rect.bottom - rect.top, 0, 0, instance, 0);
+	window = CreateWindowEx(0, "d3d9", title, WS_POPUP | WS_VISIBLE, 0, 0, width, height, 0, 0, instance, 0);
 	if (!window) throw std::string("CreateWindowEx failed");
 
 	direct3d = Direct3DCreate9(D3D_SDK_VERSION);
@@ -61,16 +46,19 @@ D3DWin::D3DWin(const char *title, unsigned int width, unsigned int height, D3DFO
 		ShowCursor(FALSE);
 	}
 
-	if (FAILED(direct3d->CreateDevice(
-		D3DADAPTER_DEFAULT,
+
+	D3DCAPS9 caps;
+	direct3d->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &caps);
+
+	if (!(caps.DevCaps&D3DDEVCAPS_HWTRANSFORMANDLIGHT)) MessageBox(NULL, "Your GPU is from Poland!", "Warning", MB_OK);
+
+	if (FAILED(direct3d->CreateDevice(D3DADAPTER_DEFAULT,
 		D3DDEVTYPE_HAL,
+//		D3DDEVTYPE_REF,
 		window,
-		D3DCREATE_HARDWARE_VERTEXPROCESSING,
+		(caps.DevCaps&D3DDEVCAPS_HWTRANSFORMANDLIGHT) ? D3DCREATE_HARDWARE_VERTEXPROCESSING : D3DCREATE_SOFTWARE_VERTEXPROCESSING,
 		&presentparameters, &device)))
 		throw std::string("CreateDevice() failed");
-
-	pause = false;
-	L33T = this;
 }
 
 D3DWin::~D3DWin() {
@@ -102,37 +90,6 @@ LRESULT CALLBACK D3DWin::window_proc(HWND win,UINT message,WPARAM wparam,LPARAM 
 		PostQuitMessage(0);
 		return 0;
 	break;
-
-	case CM_PAUSE:
-		L33T->pause = !L33T->pause;
-		if(L33T->pause) {
-			//FMUSIC_SetPaused(mod,TRUE);
-			BASS_Pause();
-		} else {
-			L33T->sync->load();
-			//long long bytes_played = BASS_ChannelGetPosition(music_file);
-			//return bytes_played * (1.0 / (44100 * 2 * 2));
-			BASS_ChannelSetPosition(L33T->player->music_file,(wparam/8.0f) / ((1.0 / (44100 * 2 * 2))) / (float(BPM) / 60));
-			//FSOUND_Stream_SetTime(mod,wParam*secsperrow*1000);
-			//FMUSIC_SetPaused(mod,FALSE);
-			BASS_Start();
-		}
-		return 0;
-		break;
-
-	case CM_RELOAD:
-		L33T->sync->load();
-		return 0;
-		break;
-
-	case CM_MOVEPOS:
-		if(L33T->pause) {
-			L33T->sync->load();
-			BASS_ChannelSetPosition(L33T->player->music_file,(wparam/8.0f) / ((1.0 / (44100 * 2 * 2))) / (float(BPM) / 60));
-			BASS_Pause();
-		}
-		return 0;
-		break;
 
 	case WM_SYSCOMMAND:
 		switch (wparam) {

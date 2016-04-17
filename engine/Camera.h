@@ -30,7 +30,7 @@ namespace engine {
 
 	class LookAtCamera : public Camera {
 	public:
-		LookAtCamera(Entity *target = 0, Entity *parent = 0, float roll = 0.f, float fov = 60.f, float aspect = 4.f/3, float znear = 1.f, float zfar = 1000.f) : target(target), roll(roll), Camera(parent, fov, aspect, znear) {}
+		LookAtCamera(Entity *target = 0, Entity *parent = 0, float roll = 0.f, float fov = 60.f, float aspect = 4.f/3, float znear = 1.f, float zfar = 2000.f) : target(target), roll(roll), Camera(parent, fov, aspect, znear) {}
 
 		Matrix get_matrix() {
 			Vector targ = Vector(0.f, 0.f, 0.f);

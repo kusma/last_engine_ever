@@ -44,6 +44,7 @@ BlurTexture::~BlurTexture() {
 
 void BlurTexture::do_blur( bool horisontal, float step, float brightness ) {
 	set();
+/*	device->Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0, 1.0f, 0); */
 	for (unsigned i=0; i<2; i++) {
 		device->SetTexture(i, blur_texture->texture);
 		device->SetTextureStageState(i, D3DTSS_TEXCOORDINDEX, D3DTSS_TCI_PASSTHRU);

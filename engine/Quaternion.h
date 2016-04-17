@@ -12,16 +12,16 @@ namespace engine {
 			fix_sign();
 		}
 
-		Quaternion( const Vector &euler) {
-			Quaternion x_quat = Quaternion(cosf(euler.x / 2), sinf(euler.x/2), 0, 0);
-			Quaternion y_quat = Quaternion(cosf(euler.y / 2), 0, sinf(euler.y/2), 0);
-			Quaternion z_quat = Quaternion(cosf(euler.z / 2), 0, 0, sinf(euler.z/2));
+		Quaternion(const Vector &euler) {
+			Quaternion x_quat = Quaternion(cos(euler.x / 2), sin(euler.x/2), 0, 0);
+			Quaternion y_quat = Quaternion(cos(euler.y / 2), 0, sin(euler.y/2), 0);
+			Quaternion z_quat = Quaternion(cos(euler.z / 2), 0, 0, sin(euler.z/2));
 			*this = x_quat * y_quat * z_quat;
 		}
 
 		Quaternion(const Vector &axis, float angle) {
-			w = cosf(angle / 2);
-			float s = sinf(angle / 2);
+			w = cos(angle / 2);
+			float s = float(sin(angle / 2));
 			x = axis.x * s;
 			y = axis.y * s;
 			z = axis.z * s;
@@ -157,8 +157,8 @@ namespace engine {
 			result.w = 0.f;
 
 			if (fabs(w) < 1.f) {
-				float angle = acosf(w);
-				float sn = sinf(angle);
+				float angle = acos(w);
+				float sn = sin(angle);
 				if (fabs(sn)>=0.01f) {
 					float coeff = angle/sn;
 					result.x = coeff*x;
@@ -176,9 +176,9 @@ namespace engine {
 
 		Quaternion Quaternion::exp() const {
 			Quaternion result;
-			float angle = sqrtf(x*x + y*y + z*z);
-			float fsin = sinf(angle);
-			result.w = cosf(angle);
+			float angle = sqrt(x*x + y*y + z*z);
+			float fsin = sin(angle);
+			result.w = cos(angle);
 			if(fabs(fsin) >= 1e-6) {
 				float coef = fsin / angle;
 				result.x = coef*x;

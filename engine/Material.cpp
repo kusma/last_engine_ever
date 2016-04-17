@@ -19,8 +19,10 @@ Material::Material() :	emissive(Color(0,0,0,0)),
 						shinyness(0),
 						texture(0),
 						envmap(0),
-						doublesided(false),
+						cull(D3DCULL_CCW),
 						lit(true),
+						zbuff(D3DZB_TRUE),
+						z_test(true),
 						state(0),
 						srcblend(D3DBLEND_ONE),
 						dstblend(D3DBLEND_ZERO) {
@@ -42,26 +44,33 @@ void Material::update() {
 		device->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 	}
 
-	if (doublesided) device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	else device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
+	device->SetRenderState(D3DRS_CULLMODE, cull);
 	if (!lit) device->SetRenderState(D3DRS_LIGHTING, false);
 
 	device->SetRenderState(D3DRS_SPECULARENABLE, ((specular.r != 0.f) || (specular.g != 0.f) || (specular.b != 0.f)));
+	device->SetRenderState(D3DRS_SPECULARENABLE, false);
 
-	device->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
-	device->SetRenderState(D3DRS_ZWRITEENABLE, true);
+	device->SetRenderState(D3DRS_ZENABLE, zbuff);
+	device->SetRenderState(D3DRS_ZWRITEENABLE, z_test);
 
 	device->SetRenderState(D3DRS_NORMALIZENORMALS, false);
 
-	device->SetRenderState(D3DRS_COLORVERTEX, false);
+	device->SetRenderState(D3DRS_COLORVERTEX, true);
 	device->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
-
+	device->SetRenderState(D3DRS_TEXTUREFACTOR, 0xFFFFFFFF);
 
 	unsigned ts = 0;
 	if (texture) {
 		device->SetTextureStageState(ts, D3DTSS_TEXCOORDINDEX, D3DTSS_TCI_PASSTHRU);
+
 		device->SetTextureStageState(ts, D3DTSS_COLOROP, D3DTOP_MODULATE);
+		device->SetTextureStageState(ts, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+		device->SetTextureStageState(ts, D3DTSS_COLORARG2, D3DTA_CURRENT);
+
 		device->SetTextureStageState(ts, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+		device->SetTextureStageState(ts, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+		device->SetTextureStageState(ts, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+
 		device->SetSamplerState(ts, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
 		device->SetSamplerState(ts, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
 		device->SetTexture(ts, texture->texture);
@@ -70,8 +79,14 @@ void Material::update() {
 
 	if (envmap) {
 		device->SetTextureStageState(ts, D3DTSS_TEXCOORDINDEX, D3DTSS_TCI_CAMERASPACEREFLECTIONVECTOR);
+
 		device->SetTextureStageState(ts, D3DTSS_COLOROP, D3DTOP_ADD);
-		device->SetTextureStageState(ts, D3DTSS_ALPHAOP, D3DTOP_ADD);
+		device->SetTextureStageState(ts, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+		device->SetTextureStageState(ts, D3DTSS_COLORARG2, D3DTA_CURRENT);
+
+		device->SetTextureStageState(ts, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+		device->SetTextureStageState(ts, D3DTSS_ALPHAARG1, D3DTA_CURRENT);
+
 		device->SetSamplerState(ts, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
 		device->SetSamplerState(ts, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
 		device->SetTexture(ts, envmap->texture);
@@ -105,6 +120,7 @@ void Material::set( bool ambient, bool diffuse ) {
 		mat.Diffuse.r = this->diffuse.r;
 		mat.Diffuse.g = this->diffuse.g;
 		mat.Diffuse.b = this->diffuse.b;
+		mat.Diffuse.a = this->diffuse.a;
 
 		mat.Specular.r = specular.r * shinyness;
 		mat.Specular.g = specular.g * shinyness;
@@ -116,7 +132,7 @@ void Material::set( bool ambient, bool diffuse ) {
 		device->SetRenderState(D3DRS_SPECULARENABLE, false);
 	}
 
-	device->SetMaterial( &mat );
+	device->SetMaterial(&mat);
 	if (!state) update();
 	state->Apply();
 }
