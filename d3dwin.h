@@ -6,7 +6,6 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "BassPlayer.h"
-#include "..\dt2003\reader.h"
 
 class D3DWin {
 public:
@@ -21,17 +20,12 @@ public:
 		return window;
 	}
 
-	void setstuff(BassPlayer* p, Syncreader* s) { player = p; sync = s; };
-
 private:
 	static LRESULT CALLBACK window_proc(HWND win, UINT message, WPARAM wparam, LPARAM lparam);
 	HINSTANCE instance;
 	IDirect3D9 *direct3d;
 	IDirect3DDevice9 *device;
 	HWND window;
-	bool pause;
-	BassPlayer* player;
-	Syncreader* sync;
 };
 
 #endif /* _D3DWINDOW_H_ */

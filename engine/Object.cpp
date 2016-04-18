@@ -8,7 +8,7 @@ extern IDirect3DDevice9 *device;
 
 using namespace engine;
 
-Object::Object( Mesh *mesh, Entity *parent) :  mesh(mesh), Entity(parent) {
+Object::Object(Mesh *mesh, Entity *parent) :  mesh(mesh), Entity(parent), visible(true) {
 	offset.identity();
 	offset_inverse.identity();
 }
@@ -22,7 +22,7 @@ Matrix Object::get_matrix() {
 }
 
 void Object::draw() {
-	if (mesh) {
+	if (mesh && visible) {
 		Matrix absolute_matrix = get_absolute_matrix();
 		device->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&absolute_matrix);
 		mesh->draw();

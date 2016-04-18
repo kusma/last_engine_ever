@@ -7,7 +7,7 @@
 namespace engine {
 	class Camera : public Entity {
 	public:
-		Camera(Entity *parent = 0, float fov = 60.f, float aspect = 4.f/3, float znear = 1.f, float zfar = 2000.f) : fov(fov), aspect(aspect),znear(znear), zfar(zfar), Entity(parent) {}
+		Camera(Entity *parent = 0, float fov = 60.f, float aspect = 4.f/3, float znear = 1.f, float zfar = 1000.f) : fov(fov), aspect(aspect),znear(znear), zfar(zfar), Entity(parent) {}
 
 		void set_projection() {
 			Matrix projection_matrix;

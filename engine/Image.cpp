@@ -36,11 +36,32 @@ Image::~Image() {
 	if (vertex_buffer) vertex_buffer->Release();
 }
 
-void Image::draw( unsigned srcblend, unsigned dstblend, float alpha ) {
+void Image::draw( unsigned srcblend, unsigned dstblend, float alpha, float rotation ) {
 	if (alpha < 0) alpha = 0;
 	if (alpha > 1) alpha = 1;
 	device->SetTexture(0, texture->texture);
-	device->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
+
+	if (rotation == 0.f) device->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
+	else {
+		device->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
+
+		Matrix trans;
+		trans.identity();
+		trans.matrix[2][0] = 0.5f;
+		trans.matrix[2][1] = 0.5f;
+
+		Matrix rot;
+		rot.rotate(Vector(0, 0, rotation));
+
+		Matrix mat = trans * rot;
+		trans.matrix[2][0] = -0.5f;
+		trans.matrix[2][1] = -0.5f;
+		mat = mat * trans;
+
+		device->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2);
+		device->SetTransform(D3DTS_TEXTURE0, (D3DMATRIX*)&mat);
+	}
+
 	device->SetTextureStageState(0, D3DTSS_TEXCOORDINDEX, D3DTSS_TCI_PASSTHRU);
 	device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
 	device->SetRenderState(D3DRS_TEXTUREFACTOR, unsigned(alpha * 255.f) << 24);

@@ -9,7 +9,7 @@ extern "C"{
 #include <stdio.h>
 
 #define RAR_SUPPORT
-#define RAR_ARCHIVE "data.dat"
+#define RAR_ARCHIVE "data.yo"
 #define RAR_PASSWORD "ballegnikk"
 
 typedef struct{

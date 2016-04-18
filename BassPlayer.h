@@ -25,7 +25,7 @@ public:
 
 	double get_time();
 
-// 7private:
+private:
 	file *fp;
 	HSTREAM music_file;
 	float spectrum[256];

@@ -17,8 +17,17 @@ namespace engine {
 
 		Matrix get_matrix();
 
+		void set_visible(bool visible) {
+			this->visible = visible;
+		}
+
+		bool get_visible() {
+			return visible;
+		}
+
 		void draw();
 	private:
+		bool visible;
 		Mesh *mesh;
 		Matrix offset;
 		Matrix offset_inverse;

@@ -94,7 +94,6 @@
   <ItemGroup>
     <ClCompile Include="BassPlayer.cpp" />
     <ClCompile Include="d3dwin.cpp" />
-    <ClCompile Include="dt2003\reader.cpp" />
     <ClCompile Include="engine\BlurTexture.cpp" />
     <ClCompile Include="engine\Entity.cpp" />
     <ClCompile Include="engine\Image.cpp" />
