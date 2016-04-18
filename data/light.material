@@ -1,0 +1,5 @@
+<material>
+<ambient r="0.440000" g="0.4500000" b="0.480000" />
+<diffuse r="0.170000" g="0.1800000" b="0.180000" />
+<envmap file="env.jpg" />
+</material>

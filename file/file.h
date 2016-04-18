@@ -9,8 +9,8 @@ extern "C"{
 #include <stdio.h>
 
 #define RAR_SUPPORT
-#define RAR_ARCHIVE "data.dat"
-#define RAR_PASSWORD "ballegnikk"
+#define RAR_ARCHIVE "pistol.yo"
+#define RAR_PASSWORD "yG3i9"
 
 typedef struct{
 	unsigned int size;

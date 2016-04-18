@@ -37,12 +37,46 @@ static void read_color(XMLNode* node, Color* target) {
 	*target = Color(read_float(temp, "r", 1), read_float(temp, "g", 1), read_float(temp, "b", 1), read_float(temp, "a", 1));
 }
 
+static void read_prs(XMLNode* node, Prs* target) {
+	XMLNode* curr = node->FirstChild();
+	while (curr) {
+		if (strcmp(curr->Value(), "position") == 0) read_position(curr, &target->position);
+		else if (strcmp(curr->Value(), "rotation") == 0) read_rotation(curr, &target->rotation);
+		else if (strcmp(curr->Value(), "scale") == 0) read_scale(curr, &target->scale);
+		curr = curr->NextSibling();
+	}
+}
+
 void SceneProxy::read_object(Scene *scene, XMLNode* node, Entity* parent) {
 	XMLElement *temp = node->ToElement();
 	if (!temp) return;
+
+	Mesh *temp_mesh = 0;
+	if (strcmp(temp->Attribute("mesh"),"") != 0) temp_mesh = mesh_proxy.get_resource(temp->Attribute("mesh"));
+
 	// Who gives a shit about some small memleak as long as it's not vidmem? Lets allocate and forget :)
-	Object *temp_obj = new Object(mesh_proxy.get_resource(temp->Attribute("mesh")), parent);
+	Object *temp_obj = new Object(temp_mesh, parent);
 	scene->add(temp_obj);
+
+	XMLNode* curr = node->FirstChild();
+	while (curr) {
+		if (strcmp(curr->Value(), "pivot") == 0) {
+			XMLNode* curr = node->FirstChild();
+			while (curr) {
+				if (strcmp(curr->Value(), "pivot") == 0) {
+					Prs pivot;
+					read_prs(curr, &pivot);
+					Matrix pivot_matrix;
+					pivot_matrix.prs(pivot);
+//					pivot_matrix.inverse();
+					temp_obj->set_pivot_matrix(pivot_matrix);
+				}
+				curr = curr->NextSibling();
+			}
+		}
+		curr = curr->NextSibling();
+	}
+
 	read_children(scene, node, temp_obj);
 }
 
@@ -67,12 +101,14 @@ void SceneProxy::read_light(Scene *scene, XMLNode* node, Entity* parent) {
 		if (strcmp(curr->Value(), "ambient") == 0) read_color(curr, &temp_light->ambient);
 		if (strcmp(curr->Value(), "specular") == 0) read_color(curr, &temp_light->specular);
 		curr = curr->NextSibling();
-	}	
+	}
 
 	read_children(scene, node, temp_light);
 }
 
 void SceneProxy::read_children(Scene *scene, XMLNode* node, Entity* parent) {
+	read_prs(node, &parent->prs);
+
 	XMLNode* curr = node->FirstChild();
 	while (curr) {
 		// nodes
@@ -80,22 +116,16 @@ void SceneProxy::read_children(Scene *scene, XMLNode* node, Entity* parent) {
 		else if (strcmp(curr->Value(), "light") == 0) read_light(scene, curr, parent);
 		else if (parent) {
 			// node properties
-			if (strcmp(curr->Value(), "position") == 0) read_position(curr, &parent->prs.position);
-			else if (strcmp(curr->Value(), "rotation") == 0) read_rotation(curr, &parent->prs.rotation);
-			else if (strcmp(curr->Value(), "scale") == 0) read_scale(curr, &parent->prs.scale);
 		} else {
 			// scene properties
 			if (strcmp(curr->Value(), "ambient") == 0) {
 				Color temp;
 				read_color(curr, &temp);
-				temp.r = max(min(temp.r, 1), 0);
-				temp.g = max(min(temp.g, 1), 0);
-				temp.b = max(min(temp.b, 1), 0);
-				scene->set_ambient(temp.r, temp.g, temp.b);
+				scene->set_ambient(temp);
 			}
 		}
 		curr = curr->NextSibling();
-	}	
+	}
 }
 
 Scene* SceneProxy::read_from_file(std::string filename) {

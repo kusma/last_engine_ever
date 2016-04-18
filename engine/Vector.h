@@ -53,14 +53,14 @@ namespace engine {
 		}
 
 		
-		float dot_product( Vector v ) const {
-			return x*v.x + y*v.y + z*v.z;
+		float dot(const Vector &v) const {
+			return x * v.x + y * v.y + z * v.z;
 		}
 
-		Vector cross_product(const Vector v) const {
-			return Vector(	y*v.z - z*v.y,
-							z*v.x - x*v.z,
-							x*v.y - y*v.x
+		Vector cross(const Vector &v) const {
+			return Vector(	-(y * v.z - z * v.y),
+							-(z * v.x - x * v.z),
+							-(x * v.y - y * v.x)
 						);
 		}
 

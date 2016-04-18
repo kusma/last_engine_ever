@@ -1,0 +1,8 @@
+<material>
+	<ambient r="1.000000" g="1.000000" b="1.000000" a="1"/>
+	<diffuse r="1.000000" g="1.000000" b="1.000000" a="1" />
+	<texture file="text0.png" />
+	<blend srcblend="srcalpha" dstblend="one" />
+	<cull mode="none" />
+	<zbuffer test="false" />
+</material>

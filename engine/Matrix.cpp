@@ -89,8 +89,8 @@ void Matrix::project(float fovy, float aspect, float zn, float zf) {
 
 void Matrix::look_at(Vector position, Vector target, float roll) {
 	Vector forward = (target - position).normalize();
-	Vector up = forward.cross_product( Vector(0,1,0).cross_product( forward ) ).normalize();
-	Vector right = up.cross_product( forward ).normalize();
+	Vector up = forward.cross(Vector(0, 1, 0).cross(forward)).normalize();
+	Vector right = up.cross(forward).normalize();
 
 	matrix[0][0] = right.x;	matrix[0][1] = up.x;	matrix[0][2] = forward.x;	matrix[0][3] = 0;
 	matrix[1][0] = right.y;	matrix[1][1] = up.y;	matrix[1][2] = forward.y;	matrix[1][3] = 0;
@@ -102,7 +102,7 @@ void Matrix::look_at(Vector position, Vector target, float roll) {
 	*this = rot * *this;
 
 	Matrix trans;
-	trans.translate(Vector(0,0,0)-position);
+	trans.translate(-position);
 	*this *= trans;
 }
 

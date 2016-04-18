@@ -2,7 +2,7 @@
 
 using namespace engine;
 
-Mesh::Mesh() : vertexbuffer(0) {}
+Mesh::Mesh() : vertexbuffer(0), center_of_mass(0,0,0) {}
 
 Mesh::~Mesh() {
 	if (vertexbuffer) vertexbuffer->Release();
@@ -28,12 +28,13 @@ void Mesh::draw() {
 	device->SetStreamSource( 0, vertexbuffer, 0, sizeof(Vertex));
 
 //	device->DrawPrimitive( D3DPT_POINTLIST, 0, vertices.size() );
-	std::list<SubMesh>::iterator i;
+//	std::list<SubMesh>::iterator i;
+	std::vector<SubMesh>::iterator i;
 	for (i=submeshes.begin(); i!=submeshes.end(); i++) (*i).draw();
 }
 
 void SimpleMesh::draw()
 {
 	Mesh::draw();
-	device->DrawPrimitive( D3DPT_TRIANGLELIST, 0, vertices.size() / 3);
+	device->DrawPrimitive( D3DPT_TRIANGLELIST, 0, UINT(vertices.size() / 3));
 }

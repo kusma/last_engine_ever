@@ -17,28 +17,29 @@ Mesh* MeshProxy::read_from_file(std::string filename) {
 	Mesh *temp = new Mesh;
 	unsigned vertex_count;
 	file_read(&vertex_count, 1, 4, fp);
-	printf("vertices: %i\n", vertex_count);
 	temp->vertices.resize(vertex_count);
 	file_read(&temp->vertices[0], sizeof(Vertex), vertex_count, fp);
+	for (unsigned i=0; i<vertex_count; i++) {
+		temp->vertices[i].color = 0xFFFFFFFF;
+	}
 
 	unsigned submesh_count;
 	file_read(&submesh_count, 1, 4, fp);
-	printf("submeshes: %i\n", submesh_count);
 	for (unsigned i=0; i<submesh_count; i++) {
 		SubMesh *submesh = new SubMesh;
 		char *mat = file_loadstring(fp);
 		std::string material_name(mat);
-		printf("material name: \"%s\"\n", material_name.c_str());
 		free(mat);
 		submesh->set_material(material_proxy.get_resource(material_name));
 		unsigned face_count;
 		file_read(&face_count, 1, 4, fp);
-		printf("faces: %i\n", face_count);
 		submesh->indices.resize(face_count * 3);
 		file_read(&submesh->indices[0], sizeof(unsigned short), face_count * 3, fp);
 		temp->submeshes.push_back(*submesh);
 	}
 	file_close(fp);
+
+	temp->calculate_center_of_mass();
 	return temp;
 }
 

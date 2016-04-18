@@ -9,7 +9,7 @@
 namespace engine {
 	class Scene {
 	public:
-		Scene() : ambient(0xFFFFFF) {}
+		Scene() : ambient(0.1f, 0.1f, 0.1f), fog(false), fog_color(0,0,0), fog_near(0), fog_far(1000) {}
 										
 		void draw(unsigned camera = 0, bool clear = true);
 
@@ -25,15 +25,20 @@ namespace engine {
 			cameras.push_back(camera);
 		}
 
-		void set_ambient(float r, float g, float b) {
-			this->ambient = (unsigned(r * 255) << 16) | (unsigned(g * 255) << 8) | unsigned(b * 255);
+		void set_ambient(Color color) {
+			ambient = color;
 		}
 
 		std::vector<Object*> objects;
 		std::vector<Camera*> cameras;
 		std::vector<Light*> lights;
-		unsigned ambient;
-	private:
+
+		Color ambient;
+
+		bool fog;
+		Color fog_color;
+		float fog_near;
+		float fog_far;
 	};
 }
 

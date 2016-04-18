@@ -45,7 +45,7 @@ namespace engine {
 			if (index_buffer) index_buffer->Release();
 		}
 
-		void reset() {	
+		void reset(float xoffs = 0.f, float yoffs = 0.f) {
 			Vertex2D *vertex_dest = &vertices[0];
 			float inv_w = 2.f / (w - 1);
 			float inv_h = 2.f / (h - 1);
@@ -54,7 +54,7 @@ namespace engine {
 					float u = x * inv_w;
 					float v = y * inv_h;
 					vertex_dest->pos = Vector(u - 1, v - 1, 0.f);
-					vertex_dest->uv = Uv(u * 0.5f, 1 - v * 0.5f);
+					vertex_dest->uv = Uv(u * 0.5f + xoffs, 1 - v * 0.5f + yoffs);
 					vertex_dest->color = 0xFFFFFFFF;
 					vertex_dest++;
 				}
