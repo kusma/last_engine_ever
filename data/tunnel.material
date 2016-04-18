@@ -1,5 +1,5 @@
 <material>
 <ambient r="0.050980" g="0.050980" b="0.050980" />
 <diffuse r="1.000000" g="1.000000" b="1.000000" />
-<texture file="bg.jpg" />
+<texture file="bajs.jpg" />
 </material>

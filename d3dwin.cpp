@@ -23,10 +23,8 @@ D3DWin::D3DWin(const char *title, unsigned int width, unsigned int height, D3DFO
 	window = CreateWindowEx(0, "d3d9", title, WS_POPUP | WS_VISIBLE, 0, 0, width, height, 0, 0, instance, 0);
 	if (!window) throw std::string("CreateWindowEx failed");
 
-
-
 	direct3d = Direct3DCreate9(D3D_SDK_VERSION);
-	if (!direct3d) throw std::string("Direct3DCreate9() failed. Please install a new version of Direct3D.");
+	if (!direct3d) throw std::string("This demo requires DirectX 9.0c, please upgrade.");
 
 	D3DPRESENT_PARAMETERS presentparameters;
 	memset(&presentparameters, 0, sizeof(D3DPRESENT_PARAMETERS));
@@ -51,7 +49,6 @@ D3DWin::D3DWin(const char *title, unsigned int width, unsigned int height, D3DFO
 
 	D3DCAPS9 caps;
 	direct3d->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &caps);
-
 	if (!(caps.DevCaps&D3DDEVCAPS_HWTRANSFORMANDLIGHT)) MessageBox(NULL, "Your GPU is from Poland!", "Warning", MB_OK);
 
 	if (FAILED(direct3d->CreateDevice(D3DADAPTER_DEFAULT,

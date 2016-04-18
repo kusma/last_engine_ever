@@ -60,6 +60,10 @@ void BassPlayer::play() {
 	if (offset != 0.0) BASS_ChannelSetPosition(music_file, unsigned(44100 * 2 * 2 * offset));
 }
 
+void BassPlayer::pause() {
+	BASS_Pause();
+}
+
 void BassPlayer::update_spectrum() {
 	BASS_ChannelGetData(music_file, spectrum, BASS_DATA_FFT512);
 }

@@ -16,6 +16,7 @@ public:
 
 	void load( const std::string filename, double offset = 0.0 );
 	void play();
+	void pause();
 
 	void update_spectrum();
 	float sample_spectrum(float pos) {
