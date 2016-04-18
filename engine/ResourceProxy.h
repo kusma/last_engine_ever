@@ -30,12 +30,14 @@ namespace engine {
 				} catch (std::string reason) {
 					throw std::string("Failed to load ")+filename+std::string("\n")+reason;
 				}
-				if (obj!=NULL) {
-					filename_map_static[filename] = obj;
-					add_ref(obj);
-				}
+				if (obj) insert_resource(filename, obj);
 			}
 			return obj;
+		}
+
+		void insert_resource(std::string filename, T *t) {
+			filename_map_static[filename] = t;
+			add_ref(t);
 		}
 
 		void release(T* obj) {

@@ -12,7 +12,7 @@ extern IDirect3DDevice9 *device;
 namespace engine {
 	class RenderTexture : public Texture, public RenderTarget {
 	public:
-		RenderTexture( unsigned width, unsigned height, int usage = D3DUSAGE_RENDERTARGET, D3DPOOL pool = D3DPOOL_DEFAULT ) {
+		RenderTexture( unsigned width, unsigned height, int usage = D3DUSAGE_RENDERTARGET|D3DUSAGE_AUTOGENMIPMAP, D3DPOOL pool = D3DPOOL_DEFAULT ) {
 			if (device->CreateTexture(width, height, 0, usage, D3DFMT_A8R8G8B8, pool, &texture, 0) != D3D_OK)
 				throw std::string("failed to create render-texture");
 			if (texture->GetSurfaceLevel(0, &this->surface) != D3D_OK)

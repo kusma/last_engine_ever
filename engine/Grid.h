@@ -45,7 +45,7 @@ namespace engine {
 			if (index_buffer) index_buffer->Release();
 		}
 
-		void reset() {	
+		void reset(float xoffs = 0.f, float yoffs = 0.f) {
 			Vertex2D *vertex_dest = &vertices[0];
 			float inv_w = 2.f / (w - 1);
 			float inv_h = 2.f / (h - 1);
@@ -54,7 +54,7 @@ namespace engine {
 					float u = x * inv_w;
 					float v = y * inv_h;
 					vertex_dest->pos = Vector(u - 1, v - 1, 0.f);
-					vertex_dest->uv = Uv(u * 0.5f, 1 - v * 0.5f);
+					vertex_dest->uv = Uv(u * 0.5f + xoffs, 1 - v * 0.5f + yoffs);
 					vertex_dest->color = 0xFFFFFFFF;
 					vertex_dest++;
 				}
@@ -71,10 +71,6 @@ namespace engine {
 		void wave(float xpos, float ypos, float size, float power) {
 			size = 1.f/size;
 			const float size_squared = size*size;
-/*
-			xpos += 1;
-			ypos += 1;
-*/
 			Vertex2D *v = &vertices[0];
 			for (unsigned y=0; y < (h + 1); y++) {
 				for (unsigned x=0; x < (w + 1); x++) {
@@ -89,6 +85,28 @@ namespace engine {
 						v->uv.u += cx * mul;
 						v->uv.v += cy * mul;
 					}
+					v++;
+				}
+			}
+		}
+
+		void twirl(float xpos, float ypos, float size, float power) {
+			size = 1.f/size;
+			const float size_squared = size*size;
+			Vertex2D *v = &vertices[0];
+			for (unsigned y=0; y < (h + 1); y++) {
+				for (unsigned x=0; x < (w + 1); x++) {
+					float cx = float(int(x) - int(w >> 1)) * xscale - xpos;
+					float cy = float(int(y) - int(h >> 1)) * yscale - ypos;
+
+					float dist = sqrt(cx * cx + cy * cy);
+
+					float angle = (1 - cos((size - dist) * M_PI)) * power;
+					float ca = cos(angle);
+					float sa = -sin(angle);
+
+					v->uv.u += cx * ca - cy * sa;
+					v->uv.v += cy * ca + cx * sa;
 					v++;
 				}
 			}

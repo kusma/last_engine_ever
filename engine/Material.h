@@ -29,9 +29,12 @@ namespace engine {
 		Texture *texture;
 		Texture *envmap;
 
-		bool doublesided;
 		bool lit;
 
+		unsigned zbuff;
+		bool z_test;
+
+		unsigned cull;
 		unsigned srcblend;
 		unsigned dstblend;
 

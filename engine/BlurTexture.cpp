@@ -44,13 +44,14 @@ BlurTexture::~BlurTexture() {
 
 void BlurTexture::do_blur( bool horisontal, float step, float brightness ) {
 	set();
+/*	device->Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0, 1.0f, 0); */
 	for (unsigned i=0; i<2; i++) {
 		device->SetTexture(i, blur_texture->texture);
 		device->SetTextureStageState(i, D3DTSS_TEXCOORDINDEX, D3DTSS_TCI_PASSTHRU);
 		device->SetTextureStageState(i, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
 		device->SetTextureStageState(i, D3DTSS_TEXCOORDINDEX, 0);
-		device->SetSamplerState(i, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
-		device->SetSamplerState(i, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
+		device->SetSamplerState(i, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
+		device->SetSamplerState(i, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
 	}
 	device->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_DISABLE);
 

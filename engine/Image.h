@@ -16,12 +16,12 @@ namespace engine {
 
 		float left, top, width, height;
 
-		void draw(unsigned srcblend=D3DBLEND_ONE, unsigned dstblend=D3DBLEND_ZERO, float alpha = 1.f);
+		void draw(unsigned srcblend=D3DBLEND_ONE, unsigned dstblend=D3DBLEND_ZERO, float alpha = 1.f, float rotation = 0.f);
 		Texture* get_texture() { return texture; }
 		IDirect3DVertexBuffer9* get_vertex_buffer() { return vertex_buffer; }
 
-	private:
 		Texture *texture;
+	private:
 		IDirect3DVertexBuffer9 *vertex_buffer;
 	};
 }
